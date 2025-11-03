@@ -51,19 +51,5 @@ router.post("/email", async (req: express.Request, res: express.Response) => {
   }
 });
 
-// POST /api/settings/check-reminders - Manually trigger reminder check
-router.post(
-  "/check-reminders",
-  async (req: express.Request, res: express.Response) => {
-    try {
-      const { emailService } = await import("../services/emailService");
-      await emailService.checkAndSendReminders();
-      res.json({ success: true, message: "Reminder check completed" });
-    } catch (error) {
-      console.error("Error checking reminders:", error);
-      res.status(500).json({ error: "Failed to check reminders" });
-    }
-  }
-);
 
 export default router;

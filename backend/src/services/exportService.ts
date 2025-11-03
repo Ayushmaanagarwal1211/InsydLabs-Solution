@@ -110,10 +110,6 @@ export class ExportService {
         // Add detailed transactions sheet
         console.log("Adding transactions sheet...");
         await this.addTransactionsSheet(workbook, limitedPayments, options);
-
-        // Add reconciliation sheet if needed
-        console.log("Adding reconciliation sheet...");
-        await this.addReconciliationSheet(workbook, limitedPayments);
       } catch (sheetError) {
         console.error("Error adding sheets:", sheetError);
         throw new Error(
@@ -466,47 +462,6 @@ export class ExportService {
   }
 
   /**
-   * Add reconciliation sheet to workbook
-   */
-  private async addReconciliationSheet(
-    workbook: ExcelJS.Workbook,
-    payments: any[]
-  ): Promise<void> {
-    const worksheet = workbook.addWorksheet("Reconciliation");
-
-    // Define columns for reconciliation tracking
-    worksheet.columns = [
-      { header: "Transaction ID", key: "id", width: 15 },
-      { header: "Date", key: "date", width: 12 },
-      { header: "Amount", key: "amount", width: 15 },
-      { header: "Type", key: "type", width: 10 },
-      { header: "Status", key: "status", width: 12 },
-      { header: "Reconciled", key: "reconciled", width: 12 },
-      { header: "Bank Match", key: "bankMatch", width: 15 },
-      { header: "Notes", key: "notes", width: 30 },
-    ];
-
-    // Add reconciliation data
-    for (const payment of payments) {
-      const row = {
-        id: payment._id.toString().substring(0, 8),
-        date: this.formatDate(payment.date),
-        amount: payment.amount,
-        type: payment.type?.toUpperCase(),
-        status: payment.status?.toUpperCase(),
-        reconciled: payment.status === "cleared" ? "YES" : "NO",
-        bankMatch: "", // To be filled during reconciliation
-        notes: payment.description || "",
-      };
-
-      worksheet.addRow(row);
-    }
-
-    // Style the reconciliation sheet
-    this.styleReconciliationSheet(worksheet);
-  }
-
-  /**
    * Convert payments to Tally format
    */
   private convertToTallyFormat(payments: any[]): TallyExportData {
@@ -800,26 +755,6 @@ export class ExportService {
       console.error("Error styling transactions sheet:", error);
       // Continue without styling if there's an error
     }
-  }
-
-  /**
-   * Style reconciliation sheet
-   */
-  private styleReconciliationSheet(worksheet: ExcelJS.Worksheet): void {
-    // Similar styling to transactions sheet
-    this.styleTransactionsSheet(worksheet);
-
-    // Additional styling for reconciliation status
-    worksheet.getColumn("reconciled").eachCell((cell, rowNumber) => {
-      if (rowNumber > 1) {
-        // Skip header
-        if (cell.value === "YES") {
-          cell.font = { color: { argb: "008000" }, bold: true };
-        } else {
-          cell.font = { color: { argb: "FF0000" }, bold: true };
-        }
-      }
-    });
   }
 
   /**

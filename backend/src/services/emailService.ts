@@ -7,12 +7,11 @@ export class EmailService {
   private transporter: nodemailer.Transporter;
 
   constructor() {
-    // Configure email transporter (using Gmail as example)
     this.transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER, // Your Gmail address
-        pass: process.env.EMAIL_PASS, // Your Gmail app password
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS,
       },
     });
   }
@@ -77,7 +76,6 @@ export class EmailService {
     try {
       await connectDB();
 
-      // Get notification email from settings
       const emailSetting = await Setting.findOne({
         type: "notification_email",
       });
@@ -86,19 +84,16 @@ export class EmailService {
         return;
       }
 
-      // Calculate tomorrow's date
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      const tomorrowStr = tomorrow.toISOString().split("T")[0]; // YYYY-MM-DD format
+      const tomorrowStr = tomorrow.toISOString().split("T")[0]; 
 
-      // Find post-dated cheques due tomorrow
       const dueChequesRaw = await Payment.find({
         type: "cheque",
         status: "pending",
         postDatedDate: tomorrowStr,
       });
 
-      // Convert to plain objects and filter out null/undefined values
       const dueCheques = dueChequesRaw
         .map((cheque) => cheque.toObject())
         .filter((cheque) => cheque.postDatedDate);
@@ -111,9 +106,9 @@ export class EmailService {
         );
 
         if (emailSent) {
-          console.log("✅ Reminder emails sent successfully");
+          console.log("Reminder emails sent successfully");
         } else {
-          console.log("❌ Failed to send reminder emails");
+          console.log("Failed to send reminder emails");
         }
       } else {
         console.log("No cheques due tomorrow");

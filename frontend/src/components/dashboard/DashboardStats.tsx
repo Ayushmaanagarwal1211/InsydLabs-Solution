@@ -17,31 +17,20 @@ interface StatsData {
   totalProfit: number;
 }
 
-interface BounceRiskStats {
-  totalPDCs: number;
-  highRisk: number;
-  mediumRisk: number;
-  lowRisk: number;
-  totalRiskAmount: number;
-}
 
 interface DashboardStatsProps {
   stats: StatsData | null;
   totalCount: number;
-  bounceRiskStats?: BounceRiskStats;
 }
 
 export default function DashboardStats({
   stats,
   totalCount,
-  bounceRiskStats,
 }: DashboardStatsProps) {
   const totalPayments = stats?.total || totalCount || 0;
   const totalAmount = stats?.totalAmount || 0;
-  const pendingAmount = stats?.byStatus?.pending?.amount || 0;
   const incomingAmount = stats?.byDirection?.incoming?.amount || 0;
   const outgoingAmount = stats?.byDirection?.outgoing?.amount || 0;
-  const netAmount = stats?.netAmount || 0;
 
   const pendingIncomingAmount =
     stats?.pendingByDirection?.incoming?.amount || 0;
@@ -77,24 +66,6 @@ export default function DashboardStats({
           ₹{outgoingAmount.toLocaleString()}
         </p>
       </div>
-      {/* <div className="bg-white rounded-lg shadow p-4">
-        <h3 className="text-sm font-medium text-gray-600 mb-1">Net Amount</h3>
-        <p
-          className={`text-xl font-bold ${
-            netAmount >= 0 ? "text-green-600" : "text-red-600"
-          }`}
-        >
-          ₹{netAmount.toLocaleString()}
-        </p>
-      </div> */}
-      {/* <div className="bg-white rounded-lg shadow p-4">
-        <h3 className="text-sm font-medium text-gray-600 mb-1">
-          Pending Amount
-        </h3>
-        <p className="text-xl font-bold text-yellow-600">
-          ₹{pendingAmount.toLocaleString()}
-        </p>
-      </div> */}
       <div className="bg-white rounded-lg shadow p-4">
         <h3 className="text-sm font-medium text-gray-600 mb-1">
           Pending PDC's Incoming

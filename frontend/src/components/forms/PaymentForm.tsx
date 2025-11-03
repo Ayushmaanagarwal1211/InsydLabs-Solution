@@ -40,7 +40,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Client-side validation for required fields
     const errors = [];
 
     if (
@@ -55,7 +54,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
       errors.push("Date is required");
     }
 
-    // Validation based on payment type
     if (formData.type === "cheque") {
       if (!formData.issuedBy?.trim()) {
         errors.push("Issued By is required for cheque payments");
@@ -70,7 +68,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
     }
 
     if (errors.length > 0) {
-      // Show validation errors using toast
       errors.forEach((error) => {
         toast.error(error, {
           position: "top-right",
@@ -90,7 +87,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
-    // Clear file input when switching to cash
     if (field === "type" && value === "cash") {
       const input = document.querySelector(
         'input[type="file"]'
@@ -99,17 +95,14 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
     }
   };
 
-  // Clear irrelevant fields when payment type changes
   useEffect(() => {
     if (formData.type === "cheque") {
-      // Clear cash-specific fields
       setFormData((prev) => ({
         ...prev,
         receivedBy: "",
         status: prev.postDatedDate ? "pending" : "cleared",
       }));
     } else if (formData.type === "cash") {
-      // Clear cheque-specific fields
       setFormData((prev) => ({
         ...prev,
         chequeNumber: "",
@@ -118,7 +111,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
         postDatedDate: "",
         status: "deposited",
       }));
-      // Clear image and OCR data for cash payments
       setSelectedImage(null);
       setImagePreview(null);
       setOcrResult(null);
@@ -126,20 +118,16 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
     }
   }, [formData.type]);
 
-  // Automatic status management based on post-dated date
   useEffect(() => {
     if (formData.type === "cheque") {
       if (!formData.postDatedDate || formData.postDatedDate === "") {
-        // No post-dated date selected - set status to cleared
         setFormData((prev) => ({ ...prev, status: "cleared" }));
       } else {
-        // Post-dated date selected - set status to pending
         setFormData((prev) => ({ ...prev, status: "pending" }));
       }
     }
   }, [formData.postDatedDate, formData.type]);
 
-  // OCR Processing Functions
   const processImageOCR = async (file: File) => {
     if (formData.type !== "cheque") {
       alert("OCR is only available for cheque payments");
@@ -188,14 +176,12 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
     if (file) {
       setSelectedImage(file);
 
-      // Create image preview
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
 
-      // Auto-process OCR for cheque images
       if (formData.type === "cheque") {
         processImageOCR(file);
       }
@@ -210,7 +196,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
         </h3>
 
         <form onSubmit={handleSubmit}>
-          {/* Image Upload for Cheque with OCR - Only show for cheque payments */}
           {formData.type === "cheque" && (
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -272,6 +257,60 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
                           🔍 Process Again
                         </button>
                       )}
+                  </div>
+                </div>
+              )}
+              {showOCRPreview && ocrResult?.success && (
+                <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <h4 className="font-medium text-green-800 mb-3 flex items-center">
+                    <span className="mr-2">🤖</span>
+                    OCR Extraction Results
+                  </h4>
+
+                  <div className="space-y-2 text-sm">
+                    {ocrResult.data?.chequeNumber && (
+                      <div>
+                        <strong>Cheque Number:</strong>{" "}
+                        {ocrResult.data.chequeNumber}
+                      </div>
+                    )}
+                    {ocrResult.data?.bankName && (
+                      <div>
+                        <strong>Bank:</strong> {ocrResult.data.bankName}
+                      </div>
+                    )}
+                    {ocrResult.data?.amount && (
+                      <div>
+                        <strong>Amount:</strong> ₹{ocrResult.data.amount}
+                      </div>
+                    )}
+                    {ocrResult.data?.date && (
+                      <div>
+                        <strong>Date:</strong> {ocrResult.data.date}
+                      </div>
+                    )}
+                    {ocrResult.data?.issuedBy && (
+                      <div>
+                        <strong>Issued By:</strong> {ocrResult.data.issuedBy}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      type="button"
+                      onClick={applyOCRData}
+                      className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+                    >
+                      ✓ Apply Data
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowOCRPreview(false)}
+                      className="px-3 py-1 bg-gray-300 text-gray-700 text-sm rounded hover:bg-gray-400"
+                    >
+                      ✗ Dismiss
+                    </button>
                   </div>
                 </div>
               )}
@@ -401,62 +440,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
               placeholder="Enter receiver name"
               required
             />
-          )}
-
-          {/* OCR Preview Modal */}
-          {showOCRPreview && ocrResult?.success && (
-            <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <h4 className="font-medium text-green-800 mb-3 flex items-center">
-                <span className="mr-2">🤖</span>
-                OCR Extraction Results
-              </h4>
-
-              <div className="space-y-2 text-sm">
-                {ocrResult.data?.chequeNumber && (
-                  <div>
-                    <strong>Cheque Number:</strong>{" "}
-                    {ocrResult.data.chequeNumber}
-                  </div>
-                )}
-                {ocrResult.data?.bankName && (
-                  <div>
-                    <strong>Bank:</strong> {ocrResult.data.bankName}
-                  </div>
-                )}
-                {ocrResult.data?.amount && (
-                  <div>
-                    <strong>Amount:</strong> ₹{ocrResult.data.amount}
-                  </div>
-                )}
-                {ocrResult.data?.date && (
-                  <div>
-                    <strong>Date:</strong> {ocrResult.data.date}
-                  </div>
-                )}
-                {ocrResult.data?.issuedBy && (
-                  <div>
-                    <strong>Issued By:</strong> {ocrResult.data.issuedBy}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex gap-2 mt-3">
-                <button
-                  type="button"
-                  onClick={applyOCRData}
-                  className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
-                >
-                  ✓ Apply Data
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowOCRPreview(false)}
-                  className="px-3 py-1 bg-gray-300 text-gray-700 text-sm rounded hover:bg-gray-400"
-                >
-                  ✗ Dismiss
-                </button>
-              </div>
-            </div>
           )}
 
           <div className="flex gap-3 pt-4">

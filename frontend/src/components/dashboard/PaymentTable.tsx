@@ -111,7 +111,6 @@ export default function PaymentTable({
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {(() => {
-                    // Calculate bounce risk for pending PDCs only
                     if (
                       payment.status === "pending" &&
                       payment.type === "cheque" &&
@@ -185,12 +184,13 @@ export default function PaymentTable({
                   </div>
                   {payment.imageUrl && (
                     <div className="mt-1">
-                      <button
-                        onClick={() => window.open(payment.imageUrl, "_blank")}
+                      <a
+                        href={payment.imageUrl}
+                        target="_blank"
                         className="text-blue-600 hover:text-blue-800 text-xs underline"
                       >
-                        📎 View Image
-                      </button>
+                        View Image
+                      </a>
                     </div>
                   )}
                 </td>
@@ -236,7 +236,6 @@ export default function PaymentTable({
         )}
       </div>
 
-      {/* Pagination Controls */}
       {totalCount > 0 && (
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
           <div className="flex items-center justify-between">

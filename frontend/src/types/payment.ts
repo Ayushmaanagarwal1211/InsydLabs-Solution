@@ -8,18 +8,15 @@ export interface Payment {
   direction: "incoming" | "outgoing";
   description?: string;
 
-  // Cheque specific fields
   chequeNumber?: string;
   bankName?: string;
   accountNumber?: string;
   postDatedDate?: string;
   issuedBy?: string;
 
-  // Cash specific fields
   receivedBy?: string;
   denominationBreakdown?: { [key: string]: number };
 
-  // Common fields
   reminderDate?: string;
   imageUrl?: string;
   createdAt?: string;
@@ -33,14 +30,12 @@ export interface CreatePaymentRequest {
   direction: "incoming" | "outgoing";
   description?: string;
 
-  // Cheque specific
   chequeNumber?: string;
   bankName?: string;
   accountNumber?: string;
   postDatedDate?: string;
   issuedBy?: string;
 
-  // Cash specific
   receivedBy?: string;
   denominationBreakdown?: { [key: string]: number };
 }

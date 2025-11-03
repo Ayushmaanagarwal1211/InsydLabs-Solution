@@ -225,7 +225,6 @@ export default function BulkUploadModal({
                           />
                         </td>
 
-                        {/* Issued By - Required */}
                         <td className="px-3 py-2">
                           {item.status === "ready" ? (
                             <input
@@ -246,7 +245,6 @@ export default function BulkUploadModal({
                           )}
                         </td>
 
-                        {/* Amount - Required */}
                         <td className="px-3 py-2">
                           {item.status === "ready" ? (
                             <input
@@ -271,8 +269,7 @@ export default function BulkUploadModal({
                           )}
                         </td>
 
-                        {/* Date - Required */}
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-4">
                           {item.status === "ready" ? (
                             <input
                               type="date"
@@ -291,8 +288,7 @@ export default function BulkUploadModal({
                           )}
                         </td>
 
-                        {/* Cheque Number - Required */}
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-4">
                           {item.status === "ready" ? (
                             <input
                               type="text"
@@ -316,8 +312,7 @@ export default function BulkUploadModal({
                           )}
                         </td>
 
-                        {/* Bank Name - Required */}
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-4">
                           {item.status === "ready" ? (
                             <input
                               type="text"
@@ -338,8 +333,7 @@ export default function BulkUploadModal({
                           )}
                         </td>
 
-                        {/* Direction - Auto set */}
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-4">
                           {item.status === "ready" ? (
                             <select
                               value={item.extracted?.direction || "incoming"}
@@ -356,8 +350,7 @@ export default function BulkUploadModal({
                           )}
                         </td>
 
-                        {/* Post Dated Date - Optional */}
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-4">
                           {item.status === "ready" ? (
                             <input
                               type="date"
@@ -377,8 +370,7 @@ export default function BulkUploadModal({
                           )}
                         </td>
 
-                        {/* Processing Status */}
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-4">
                           <span
                             className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                               item.status === "ready"
@@ -404,8 +396,7 @@ export default function BulkUploadModal({
                           )}
                         </td>
 
-                        {/* Validation Status */}
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-4">
                           {item.status === "ready" && (
                             <div className="space-y-1">
                               {(() => {
@@ -459,7 +450,6 @@ export default function BulkUploadModal({
                 </table>
               </div>
 
-              {/* Bulk Action Footer */}
               <div className="flex justify-between items-center mt-6 p-4 bg-gray-50 rounded-lg">
                 <div>
                   <p className="text-sm font-medium text-gray-700">

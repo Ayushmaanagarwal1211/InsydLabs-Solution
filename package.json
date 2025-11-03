@@ -22,6 +22,7 @@
     "frontend"
   ],
   "dependencies": {
-    "cloudinary": "^2.8.0"
+    "cloudinary": "^2.8.0",
+    "lucide-react": "^0.552.0"
   }
 }
