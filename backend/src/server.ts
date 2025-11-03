@@ -9,7 +9,6 @@ import cron from "node-cron";
 import { connectDB } from "./db/connection";
 import paymentRoutes from "./routes/payments";
 import settingsRoutes from "./routes/settings";
-import reconciliationRoutes from "./routes/reconciliation";
 
 dotenv.config();
 
@@ -40,7 +39,6 @@ app.use("/uploads", express.static(uploadsDir));
 // Routes
 app.use("/api/payments", paymentRoutes);
 app.use("/api/settings", settingsRoutes);
-app.use("/api/reconciliation", reconciliationRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {
