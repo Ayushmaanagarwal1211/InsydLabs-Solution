@@ -17,14 +17,24 @@ interface StatsData {
   totalProfit: number;
 }
 
+interface BounceRiskStats {
+  totalPDCs: number;
+  highRisk: number;
+  mediumRisk: number;
+  lowRisk: number;
+  totalRiskAmount: number;
+}
+
 interface DashboardStatsProps {
   stats: StatsData | null;
   totalCount: number;
+  bounceRiskStats?: BounceRiskStats;
 }
 
 export default function DashboardStats({
   stats,
   totalCount,
+  bounceRiskStats,
 }: DashboardStatsProps) {
   const totalPayments = stats?.total || totalCount || 0;
   const totalAmount = stats?.totalAmount || 0;
@@ -103,14 +113,16 @@ export default function DashboardStats({
       </div>
       <div className="bg-white rounded-lg shadow p-4">
         <h3 className="text-sm font-medium text-gray-600 mb-1">
-          Total Bounced Cheque's
+          Total Bounced Payments
         </h3>
         <p className="text-xl font-bold text-red-500">
           ₹{totalBounced.toLocaleString()}
         </p>
       </div>
       <div className="bg-white rounded-lg shadow p-4">
-        <h3 className="text-sm font-medium text-gray-600 mb-1">Current Profit</h3>
+        <h3 className="text-sm font-medium text-gray-600 mb-1">
+          Current Profit
+        </h3>
         <p
           className={`text-xl font-bold ${
             totalProfit >= 0 ? "text-green-600" : "text-red-600"

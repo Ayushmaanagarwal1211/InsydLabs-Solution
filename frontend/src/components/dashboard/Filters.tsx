@@ -1,4 +1,4 @@
-import { Button, Select } from '../ui';
+import { Button, Select } from "../ui";
 
 interface FilterProps {
   type: string;
@@ -11,7 +11,10 @@ interface FiltersComponentProps {
   onFiltersChange: (filters: FilterProps) => void;
 }
 
-export default function Filters({ filters, onFiltersChange }: FiltersComponentProps) {
+export default function Filters({
+  filters,
+  onFiltersChange,
+}: FiltersComponentProps) {
   const handleFilterChange = (key: keyof FilterProps, value: string) => {
     onFiltersChange({
       ...filters,
@@ -30,10 +33,9 @@ export default function Filters({ filters, onFiltersChange }: FiltersComponentPr
           label="Filter by Type"
           value={filters.type}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            handleFilterChange('type', e.target.value)
+            handleFilterChange("type", e.target.value)
           }
           options={[
-            { value: "", label: "All Types" },
             { value: "cheque", label: "Cheque" },
             { value: "cash", label: "Cash" },
           ]}
@@ -42,10 +44,9 @@ export default function Filters({ filters, onFiltersChange }: FiltersComponentPr
           label="Filter by Status"
           value={filters.status}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            handleFilterChange('status', e.target.value)
+            handleFilterChange("status", e.target.value)
           }
           options={[
-            { value: "", label: "All Status" },
             { value: "pending", label: "Pending" },
             { value: "cleared", label: "Cleared" },
             { value: "bounced", label: "Bounced" },
@@ -56,15 +57,17 @@ export default function Filters({ filters, onFiltersChange }: FiltersComponentPr
           label="Filter by Direction"
           value={filters.direction}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            handleFilterChange('direction', e.target.value)
+            handleFilterChange("direction", e.target.value)
           }
           options={[
-            { value: "", label: "All Directions" },
             { value: "incoming", label: "Incoming" },
             { value: "outgoing", label: "Outgoing" },
           ]}
         />
-        <div className="flex items-end">
+        <div className="flex flex-col">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            &nbsp;
+          </label>
           <Button variant="secondary" onClick={clearFilters}>
             Clear Filters
           </Button>
