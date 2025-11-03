@@ -1,4 +1,5 @@
 interface StatsData {
+  total: number;
   totalAmount: number;
   byStatus?: {
     pending?: { amount: number };
@@ -21,55 +22,53 @@ interface DashboardStatsProps {
   totalCount: number;
 }
 
-export default function DashboardStats({ stats, totalCount }: DashboardStatsProps) {
+export default function DashboardStats({
+  stats,
+  totalCount,
+}: DashboardStatsProps) {
+  const totalPayments = stats?.total || totalCount || 0;
   const totalAmount = stats?.totalAmount || 0;
   const pendingAmount = stats?.byStatus?.pending?.amount || 0;
   const incomingAmount = stats?.byDirection?.incoming?.amount || 0;
   const outgoingAmount = stats?.byDirection?.outgoing?.amount || 0;
   const netAmount = stats?.netAmount || 0;
 
-  const pendingIncomingAmount = stats?.pendingByDirection?.incoming?.amount || 0;
-  const pendingOutgoingAmount = stats?.pendingByDirection?.outgoing?.amount || 0;
-  
+  const pendingIncomingAmount =
+    stats?.pendingByDirection?.incoming?.amount || 0;
+  const pendingOutgoingAmount =
+    stats?.pendingByDirection?.outgoing?.amount || 0;
+
   const totalBounced = stats?.totalBounced || 0;
   const totalProfit = stats?.totalProfit || 0;
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-10 gap-4 mb-6">
+    <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-8 gap-4 mb-6 ">
       <div className="bg-white rounded-lg shadow p-4">
         <h3 className="text-sm font-medium text-gray-600 mb-1">
           Total Payments
         </h3>
-        <p className="text-xl font-bold text-blue-600">{totalCount}</p>
+        <p className="text-xl font-bold text-blue-600">{totalPayments}</p>
       </div>
       <div className="bg-white rounded-lg shadow p-4">
-        <h3 className="text-sm font-medium text-gray-600 mb-1">
-          Total Amount
-        </h3>
+        <h3 className="text-sm font-medium text-gray-600 mb-1">Total Amount</h3>
         <p className="text-xl font-bold text-purple-600">
           ₹{totalAmount.toLocaleString()}
         </p>
       </div>
       <div className="bg-white rounded-lg shadow p-4">
-        <h3 className="text-sm font-medium text-gray-600 mb-1">
-          Incoming
-        </h3>
+        <h3 className="text-sm font-medium text-gray-600 mb-1">Incoming</h3>
         <p className="text-xl font-bold text-green-600">
           ₹{incomingAmount.toLocaleString()}
         </p>
       </div>
       <div className="bg-white rounded-lg shadow p-4">
-        <h3 className="text-sm font-medium text-gray-600 mb-1">
-          Outgoing
-        </h3>
+        <h3 className="text-sm font-medium text-gray-600 mb-1">Outgoing</h3>
         <p className="text-xl font-bold text-red-600">
           ₹{outgoingAmount.toLocaleString()}
         </p>
       </div>
-      <div className="bg-white rounded-lg shadow p-4">
-        <h3 className="text-sm font-medium text-gray-600 mb-1">
-          Net Amount
-        </h3>
+      {/* <div className="bg-white rounded-lg shadow p-4">
+        <h3 className="text-sm font-medium text-gray-600 mb-1">Net Amount</h3>
         <p
           className={`text-xl font-bold ${
             netAmount >= 0 ? "text-green-600" : "text-red-600"
@@ -77,18 +76,18 @@ export default function DashboardStats({ stats, totalCount }: DashboardStatsProp
         >
           ₹{netAmount.toLocaleString()}
         </p>
-      </div>
-      <div className="bg-white rounded-lg shadow p-4">
+      </div> */}
+      {/* <div className="bg-white rounded-lg shadow p-4">
         <h3 className="text-sm font-medium text-gray-600 mb-1">
           Pending Amount
         </h3>
         <p className="text-xl font-bold text-yellow-600">
           ₹{pendingAmount.toLocaleString()}
         </p>
-      </div>
+      </div> */}
       <div className="bg-white rounded-lg shadow p-4">
         <h3 className="text-sm font-medium text-gray-600 mb-1">
-          Pending Incoming
+          Pending PDC's Incoming
         </h3>
         <p className="text-xl font-bold text-green-500">
           ₹{pendingIncomingAmount.toLocaleString()}
@@ -96,7 +95,7 @@ export default function DashboardStats({ stats, totalCount }: DashboardStatsProp
       </div>
       <div className="bg-white rounded-lg shadow p-4">
         <h3 className="text-sm font-medium text-gray-600 mb-1">
-          Pending Outgoing
+          Pending PDC's Outgoing
         </h3>
         <p className="text-xl font-bold text-orange-600">
           ₹{pendingOutgoingAmount.toLocaleString()}
@@ -104,16 +103,14 @@ export default function DashboardStats({ stats, totalCount }: DashboardStatsProp
       </div>
       <div className="bg-white rounded-lg shadow p-4">
         <h3 className="text-sm font-medium text-gray-600 mb-1">
-          Total Bounced
+          Total Bounced Cheque's
         </h3>
         <p className="text-xl font-bold text-red-500">
           ₹{totalBounced.toLocaleString()}
         </p>
       </div>
       <div className="bg-white rounded-lg shadow p-4">
-        <h3 className="text-sm font-medium text-gray-600 mb-1">
-          Total Profit
-        </h3>
+        <h3 className="text-sm font-medium text-gray-600 mb-1">Current Profit</h3>
         <p
           className={`text-xl font-bold ${
             totalProfit >= 0 ? "text-green-600" : "text-red-600"
