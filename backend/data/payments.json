@@ -1,0 +1,43 @@
+[
+  {
+    "id": "1",
+    "type": "cheque",
+    "amount": 50000,
+    "date": "2025-11-01",
+    "status": "pending",
+    "description": "Payment for construction materials",
+    "chequeNumber": "123456",
+    "bankName": "HDFC Bank",
+    "accountNumber": "****1234",
+    "postDatedDate": "2025-11-10",
+    "issuedBy": "ABC Construction Ltd",
+    "reminderDate": "2025-11-09",
+    "createdAt": "2025-11-01T10:30:00.000Z",
+    "updatedAt": "2025-11-01T10:30:00.000Z"
+  },
+  {
+    "id": "2",
+    "type": "cash",
+    "amount": 25000,
+    "date": "2025-11-02",
+    "status": "deposited",
+    "description": "Cash payment for labor",
+    "receivedBy": "Rajesh Kumar",
+    "createdAt": "2025-11-02T14:15:00.000Z",
+    "updatedAt": "2025-11-02T14:15:00.000Z"
+  },
+  {
+    "id": "3",
+    "type": "cheque",
+    "amount": 75000,
+    "date": "2025-10-25",
+    "status": "cleared",
+    "description": "Final payment for project Phase 1",
+    "chequeNumber": "789012",
+    "bankName": "SBI",
+    "accountNumber": "****5678",
+    "issuedBy": "XYZ Developers",
+    "createdAt": "2025-10-25T09:20:00.000Z",
+    "updatedAt": "2025-10-30T16:45:00.000Z"
+  }
+]
