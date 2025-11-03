@@ -185,7 +185,7 @@ export default function PaymentTracker() {
       });
 
       if (imageFile) {
-        formData.append("image", imageFile);
+        formData.append("chequeImage", imageFile);
       }
 
       const response = await fetch(`${API_BASE_URL}/payments`, {
@@ -229,7 +229,7 @@ export default function PaymentTracker() {
       });
 
       if (imageFile) {
-        formData.append("image", imageFile);
+        formData.append("chequeImage", imageFile);
       }
 
       const response = await fetch(

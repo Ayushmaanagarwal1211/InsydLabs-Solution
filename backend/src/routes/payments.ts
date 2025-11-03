@@ -22,10 +22,16 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = path.join(__dirname, "../../temp-uploads");
     // Create directory if it doesn't exist
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+    try {
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+        console.log("Created temp-uploads directory:", uploadDir);
+      }
+      cb(null, uploadDir);
+    } catch (error) {
+      console.error("Error creating temp upload directory:", error);
+      cb(error as Error, uploadDir);
     }
-    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -174,7 +180,18 @@ router.post(
       }
 
       console.error("Error creating payment:", error);
-      res.status(500).json({ error: "Failed to create payment" });
+      
+      // Provide more specific error messages
+      let errorMessage = "Failed to create payment";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        console.error("Detailed error:", error.stack);
+      }
+      
+      res.status(500).json({ 
+        error: errorMessage,
+        details: process.env.NODE_ENV === 'development' ? error : undefined 
+      });
     }
   }
 );
