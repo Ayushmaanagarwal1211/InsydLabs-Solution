@@ -2,6 +2,15 @@
 
 A comprehensive Cheque & Cash Payment Tracking System built for AEC (Architecture, Engineering, Construction) businesses to manage their offline payments efficiently.
 
+## ⚠️ IMPORTANT NOTE - Renderer Deployment
+
+**The backend API is deployed on Renderer's free tier, which automatically spins down after 15 minutes of inactivity. If you encounter API errors or the app seems unresponsive:**
+
+🔄 **Please refresh the page and wait 30-40 seconds for the API to wake up**
+
+This is normal behavior for free-tier deployments. The first request after inactivity may take longer as the server restarts.
+
+
 ## 🚀 Features
 
 - **Payment Management**: Log and track both cheque and cash payments
